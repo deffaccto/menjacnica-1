@@ -8,17 +8,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 
+import menjacnica.sistemske_operacije.SODodajValutu;
+
 public class Menjacnica implements MenjacnicaInterface{
 	
 	@Override
 	public void dodajValutu(Valuta valuta) {
-		if (valuta==null)
-			throw new RuntimeException("Valuta ne sme biti null");
-		
-		if (kursnaLista.contains(valuta))
-			throw new RuntimeException("Valuta je vec uneta u kursnu listu");
-		
-		kursnaLista.add(valuta);		
+		SODodajValutu.dodajValutu(valuta, kursnaLista);		
 	}
 
 	@Override
