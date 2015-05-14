@@ -9,8 +9,12 @@ import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 
 import menjacnica.sistemske_operacije.SODodajValutu;
+import menjacnica.sistemske_operacije.SOObrisiValutu;
 
 public class Menjacnica implements MenjacnicaInterface{
+	
+	private LinkedList<Valuta> kursnaLista = new LinkedList<Valuta>();
+
 	
 	@Override
 	public void dodajValutu(Valuta valuta) {
@@ -19,10 +23,7 @@ public class Menjacnica implements MenjacnicaInterface{
 
 	@Override
 	public void obrisiValutu(Valuta valuta) {
-		if (!kursnaLista.contains(valuta))
-			throw new RuntimeException("Valuta ne postoji u kursnoj listi");
-		
-		kursnaLista.remove(valuta);
+		SOObrisiValutu.obrisiValutu(valuta, kursnaLista);
 	}
 
 	@Override
@@ -66,6 +67,5 @@ public class Menjacnica implements MenjacnicaInterface{
 		}
 	}
 
-	private LinkedList<Valuta> kursnaLista = new LinkedList<Valuta>();
-
+	
 }
