@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import menjacnica.sistemske_operacije.SODodajValutu;
 import menjacnica.sistemske_operacije.SOIzvrsiTransakciju;
 import menjacnica.sistemske_operacije.SOObrisiValutu;
+import menjacnica.sistemske_operacije.SOUcitajIzFajla;
 import menjacnica.sistemske_operacije.SOVratiKursnuListu;
 
 public class Menjacnica implements MenjacnicaInterface{
@@ -40,16 +41,7 @@ public class Menjacnica implements MenjacnicaInterface{
 
 	@Override
 	public void ucitajIzFajla(String putanja) {
-		try{
-			ObjectInputStream in = new ObjectInputStream(
-					new BufferedInputStream(new FileInputStream(putanja)));
-			
-			kursnaLista = (LinkedList<Valuta>)(in.readObject());
-			
-			in.close();
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}
+		SOUcitajIzFajla.ucitajIzFajla(putanja, kursnaLista);
 	}
 
 	@Override
