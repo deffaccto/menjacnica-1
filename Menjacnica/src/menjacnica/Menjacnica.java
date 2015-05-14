@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import menjacnica.sistemske_operacije.SODodajValutu;
 import menjacnica.sistemske_operacije.SOIzvrsiTransakciju;
 import menjacnica.sistemske_operacije.SOObrisiValutu;
+import menjacnica.sistemske_operacije.SOVratiKursnuListu;
 
 public class Menjacnica implements MenjacnicaInterface{
 	
@@ -34,7 +35,7 @@ public class Menjacnica implements MenjacnicaInterface{
 
 	@Override
 	public LinkedList<Valuta> vratiKursnuListu() {
-		return kursnaLista;
+		return SOVratiKursnuListu.vratiKursnuListu(kursnaLista);
 	}
 
 	@Override
