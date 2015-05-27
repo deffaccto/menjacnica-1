@@ -1,23 +1,52 @@
 package menjacnica.gui;
 
+import java.awt.EventQueue;
+import java.awt.List;
+import java.awt.TextField;
 import java.io.File;
+import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 import menjacnica.Menjacnica;
 import menjacnica.MenjacnicaInterface;
 import menjacnica.Valuta;
+import menjacnica.sistemske_operacije.SODodajValutu;
+import menjacnica.sistemske_operacije.SOIzvrsiTransakciju;
+import menjacnica.sistemske_operacije.SOObrisiValutu;
 
 public class GUIKontroler {
 
 	private static MenjacnicaGUI glavniProzor;
 	private static MenjacnicaInterface sistem;
+	private static Valuta valuta;
+	private static LinkedList<Valuta> kursnaLista;
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					sistem=new Menjacnica();	
+					valuta=new Valuta();
+					kursnaLista=new LinkedList<Valuta>();
+					glavniProzor=new MenjacnicaGUI();
+					glavniProzor.setVisible(true);
+					glavniProzor.setLocationRelativeTo(null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	public static void ugasiAplikaciju() {
 		int opcija = JOptionPane.showConfirmDialog(
 				glavniProzor.getContentPane(),
-				"Da li ZAISTA zelite da izadjete iz apliacije", "Izlazak",
+				"Da li ZAISTA zelite da izadjete iz aplikacije", "Izlazak",
 				JOptionPane.YES_NO_OPTION);
 
 		if (opcija == JOptionPane.YES_OPTION)
@@ -30,7 +59,7 @@ public class GUIKontroler {
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	private void sacuvajUFajl() {
+	public static void sacuvajUFajl() {
 		try {
 			JFileChooser fc = new JFileChooser();
 			int returnVal = fc.showSaveDialog(glavniProzor.getContentPane());
@@ -68,7 +97,7 @@ public class GUIKontroler {
 		prozor.setVisible(true);
 	}
 
-	private void prikaziObrisiKursGUI(Valuta valuta) {
+	public static void prikaziObrisiKursGUI(Valuta valuta) {
 		if (valuta != null) {
 			ObrisiKursGUI prozor = new ObrisiKursGUI(glavniProzor, valuta);
 			prozor.setLocationRelativeTo(glavniProzor.getContentPane());
@@ -78,7 +107,8 @@ public class GUIKontroler {
 
 	public static void obrisiValutu(Valuta valuta) {
 		try {
-			glavniProzor.sistem.obrisiValutu(valuta);
+			
+			SOObrisiValutu.obrisiValutu(valuta, kursnaLista);
 
 			glavniProzor.prikaziSveValute(sistem.vratiKursnuListu());
 		} catch (Exception e1) {
@@ -101,7 +131,7 @@ public class GUIKontroler {
 			valuta.setSrednji(srednji);
 
 			// Dodavanje valute u kursnu listu
-			glavniProzor.sistem.dodajValutu(valuta);
+			SODodajValutu.dodajValutu(valuta, kursnaLista);
 
 			// Osvezavanje glavnog prozora
 			glavniProzor.prikaziSveValute(sistem.vratiKursnuListu());
@@ -110,6 +140,42 @@ public class GUIKontroler {
 			JOptionPane.showMessageDialog(glavniProzor.getContentPane(),
 					e1.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	public static void prikaziIzvrsiZamenuGUI(){
+		IzvrsiZamenuGUI frame=new IzvrsiZamenuGUI(glavniProzor, valuta);
+		frame.setLocationRelativeTo(glavniProzor);
+		frame.setVisible(true);
+	}
+	
+	public static void izvrsiZamenu(JTextField textFieldIznos,JRadioButton rdbtnProdaja,JTextField textFieldKonacniIznos){
+		try{
+			double konacniIznos = 
+					SOIzvrsiTransakciju.izvrsiTransakciju(valuta,
+							rdbtnProdaja.isSelected(), 
+							Double.parseDouble(textFieldIznos.getText()));
+		
+			textFieldKonacniIznos.setText(""+konacniIznos);
+		} catch (Exception e1) {
+		JOptionPane.showMessageDialog(glavniProzor.getContentPane(), e1.getMessage(),
+				"Greska", JOptionPane.ERROR_MESSAGE);
+	}
+	}
+
+	public static void prikaziValutu(JTextField textFieldProdajniKurs, JTextField textFieldKupovniKurs, JTextField textFieldValuta){
+		textFieldProdajniKurs.setText(""+valuta.getProdajni());
+		textFieldKupovniKurs.setText(""+valuta.getKupovni());
+		textFieldValuta.setText(valuta.getSkraceniNaziv());
+	}
+	
+	public static void prikaziValutuOKG(JTextField textFieldNaziv, JTextField textFieldSkraceniNaziv, JTextField textFieldSifra, JTextField textFieldProdajniKurs, JTextField textFieldKupovniKurs, JTextField textFieldSrednjiKurs) {
+		// Prikaz podataka o valuti
+		textFieldNaziv.setText(valuta.getNaziv());
+		textFieldSkraceniNaziv.setText(valuta.getSkraceniNaziv());
+		textFieldSifra.setText(""+valuta.getSifra());
+		textFieldProdajniKurs.setText(""+valuta.getProdajni());
+		textFieldKupovniKurs.setText(""+valuta.getKupovni());
+		textFieldSrednjiKurs.setText(""+valuta.getSrednji());				
 	}
 
 	
