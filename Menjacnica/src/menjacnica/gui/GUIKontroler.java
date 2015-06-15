@@ -23,16 +23,16 @@ public class GUIKontroler {
 
 	private static MenjacnicaGUI glavniProzor;
 	private static MenjacnicaInterface sistem;
-	private static Valuta valuta;
-	private static LinkedList<Valuta> kursnaLista;
+	//private static Valuta valuta;
+	//private static LinkedList<Valuta> kursnaLista;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					sistem=new Menjacnica();	
-					valuta=new Valuta();
-					kursnaLista=new LinkedList<Valuta>();
+					
+					
 					glavniProzor=new MenjacnicaGUI();
 					glavniProzor.setVisible(true);
 					glavniProzor.setLocationRelativeTo(null);
@@ -108,7 +108,7 @@ public class GUIKontroler {
 	public static void obrisiValutu(Valuta valuta) {
 		try {
 			
-			SOObrisiValutu.obrisiValutu(valuta, kursnaLista);
+			sistem.obrisiValutu(valuta);
 
 			glavniProzor.prikaziSveValute(sistem.vratiKursnuListu());
 		} catch (Exception e1) {
@@ -131,7 +131,7 @@ public class GUIKontroler {
 			valuta.setSrednji(srednji);
 
 			// Dodavanje valute u kursnu listu
-			SODodajValutu.dodajValutu(valuta, kursnaLista);
+			sistem.dodajValutu(valuta);
 
 			// Osvezavanje glavnog prozora
 			glavniProzor.prikaziSveValute(sistem.vratiKursnuListu());
@@ -143,6 +143,8 @@ public class GUIKontroler {
 	}
 	
 	public static void prikaziIzvrsiZamenuGUI(){
+		Valuta valuta=new Valuta();
+		
 		IzvrsiZamenuGUI frame=new IzvrsiZamenuGUI(glavniProzor, valuta);
 		frame.setLocationRelativeTo(glavniProzor);
 		frame.setVisible(true);
@@ -150,9 +152,9 @@ public class GUIKontroler {
 	
 	public static void izvrsiZamenu(JTextField textFieldIznos,JRadioButton rdbtnProdaja,JTextField textFieldKonacniIznos){
 		try{
+			Valuta valuta=new Valuta();
 			double konacniIznos = 
-					SOIzvrsiTransakciju.izvrsiTransakciju(valuta,
-							rdbtnProdaja.isSelected(), 
+					sistem.izvrsiTransakciju(valuta,rdbtnProdaja.isSelected(), 
 							Double.parseDouble(textFieldIznos.getText()));
 		
 			textFieldKonacniIznos.setText(""+konacniIznos);
@@ -162,21 +164,9 @@ public class GUIKontroler {
 	}
 	}
 
-	public static void prikaziValutu(JTextField textFieldProdajniKurs, JTextField textFieldKupovniKurs, JTextField textFieldValuta){
-		textFieldProdajniKurs.setText(""+valuta.getProdajni());
-		textFieldKupovniKurs.setText(""+valuta.getKupovni());
-		textFieldValuta.setText(valuta.getSkraceniNaziv());
-	}
 	
-	public static void prikaziValutuOKG(JTextField textFieldNaziv, JTextField textFieldSkraceniNaziv, JTextField textFieldSifra, JTextField textFieldProdajniKurs, JTextField textFieldKupovniKurs, JTextField textFieldSrednjiKurs) {
-		// Prikaz podataka o valuti
-		textFieldNaziv.setText(valuta.getNaziv());
-		textFieldSkraceniNaziv.setText(valuta.getSkraceniNaziv());
-		textFieldSifra.setText(""+valuta.getSifra());
-		textFieldProdajniKurs.setText(""+valuta.getProdajni());
-		textFieldKupovniKurs.setText(""+valuta.getKupovni());
-		textFieldSrednjiKurs.setText(""+valuta.getSrednji());				
-	}
+	
+	
 
 	
 }

@@ -83,10 +83,10 @@ public class IzvrsiZamenuGUI extends JFrame {
 		contentPane.add(getTextFieldKonacniIznos());
 		
 		//podesavanje
-		//this.glavniProzor = glavniProzor;
+		
 		this.valuta = valuta;
 				
-		GUIKontroler.prikaziValutu(textFieldProdajniKurs, textFieldKupovniKurs, textFieldValuta);
+		prikaziValutu();
 	}
 	private JLabel getLblKupovni() {
 		if (lblKupovni == null) {
@@ -233,7 +233,11 @@ public class IzvrsiZamenuGUI extends JFrame {
 		return textFieldKonacniIznos;
 	}
 	
-	
+	private void prikaziValutu(){
+		textFieldProdajniKurs.setText(""+valuta.getProdajni());
+		textFieldKupovniKurs.setText(""+valuta.getKupovni());
+		textFieldValuta.setText(valuta.getSkraceniNaziv());
+	}
 	
 	
 }

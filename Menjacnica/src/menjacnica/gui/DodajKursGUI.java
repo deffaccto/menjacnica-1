@@ -72,8 +72,7 @@ public class DodajKursGUI extends JFrame {
 		contentPane.add(getBtnDodaj());
 		contentPane.add(getBtnOdus());
 
-		// podesavanje
-		//this.glavniProzor = glavniProzor;
+		
 
 	}
 

@@ -75,12 +75,11 @@ public class ObrisiKursGUI extends JFrame {
 		contentPane.add(getBtnDodaj());
 		contentPane.add(getBtnOdus());
 		
-		//podesavanje
-		//this.glavniProzor = glavniProzor;
+		
 		this.valuta = valuta;
 		
-		GUIKontroler.prikaziValutuOKG(textFieldNaziv, textFieldSkraceniNaziv, textFieldSifra, textFieldProdajniKurs, textFieldKupovniKurs, textFieldSrednjiKurs);
-	}
+		prikaziValutu();
+		}
 
 	private JLabel getLblSifra() {
 		if (lblSifra == null) {
@@ -216,6 +215,14 @@ public class ObrisiKursGUI extends JFrame {
 		return label;
 	}
 	
-	
+	private void prikaziValutu() {
+		// Prikaz podataka o valuti
+		textFieldNaziv.setText(valuta.getNaziv());
+		textFieldSkraceniNaziv.setText(valuta.getSkraceniNaziv());
+		textFieldSifra.setText(""+valuta.getSifra());
+		textFieldProdajniKurs.setText(""+valuta.getProdajni());
+		textFieldKupovniKurs.setText(""+valuta.getKupovni());
+		textFieldSrednjiKurs.setText(""+valuta.getSrednji());				
+	}
 	
 }
